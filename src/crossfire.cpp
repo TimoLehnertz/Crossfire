@@ -90,7 +90,7 @@ void Crossfire::updateRcChannels(CRSF_TxChanels_Converted channelsConverted) {
 }
 
 bool Crossfire::isFailsafe() {
-    return micros() - lastRcFrame > CRSF_FAILSAFE_TIMEOUT_US;
+    return (micros() - lastRcFrame > CRSF_FAILSAFE_TIMEOUT_US) || !firstFrameReceived;
 }
 
 void Crossfire::handleCrsfFrame(CRSF_Frame_t& frame, int payloadLength) {
@@ -111,7 +111,7 @@ void Crossfire::handleCrsfFrame(CRSF_Frame_t& frame, int payloadLength) {
     /**
      * Telemetry
      **/
-    // handleTelemetry();
+    handleTelemetry();
     if(!rcConnected) {
         rcConnected = true;
         rcConnectedTime = micros();
